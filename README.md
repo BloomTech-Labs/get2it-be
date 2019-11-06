@@ -15,9 +15,9 @@ To get the server running locally:
 🚫 adjust these scripts to match your project
 
 - Clone this repo
-- **yarn install** to install all required dependencies
-- **yarn server** to start the local server
-- **yarn test** to start server using testing environment
+- **npm install** to install all required dependencies
+- **npm run server** to start the local server
+- **npm test** to start server using testing environment
 
 ### Backend framework goes here
 
@@ -30,23 +30,27 @@ To get the server running locally:
 
 ## 2️⃣ Endpoints
 
-🚫This is a placeholder, replace the endpoints, access controll, and descriptioin to match your project
+🚫This is a placeholder, replace the endpoints, access control, and description to match your project
 
-#### Organization Routes
+#### Register New User
+POST to https://get2it.herokuapp.com/api/auth/register
 
-| Method | Endpoint                | Access Control | Description                                  |
-| ------ | ----------------------- | -------------- | -------------------------------------------- |
-| GET    | `/organizations/:orgId` | all users      | Returns the information for an organization. |
-| PUT    | `/organizatoins/:orgId` | owners         | Modify an existing organization.             |
-| DELETE | `/organizations/:orgId` | owners         | Delete an organization.                      |
+Takes an object including: { username: "username", password: "pass" }
+
+Returns newly created user object as well as JSON Web Token (JWT)
+
+
+#### Login Existing User
+POST to https://get2it.herokuapp.com/api/auth/login
+
+Takes an object including: { username: "username", password: "pass" }
+
+Returns JWT
+
 
 #### User Routes
 
-| Method | Endpoint                | Access Control      | Description                                        |
-| ------ | ----------------------- | ------------------- | -------------------------------------------------- |
-| GET    | `/users/current`        | all users           | Returns info for the logged in user.               |
-| GET    | `/users/org/:userId`    | owners, supervisors | Returns all users for an organization.             |
-| GET    | `/users/:userId`        | owners, supervisors | Returns info for a single user.                    |
+| Method | Endpoint                | Access Control      | Description                        
 | POST   | `/users/register/owner` | none                | Creates a new user as owner of a new organization. |
 | PUT    | `/users/:userId`        | owners, supervisors |                                                    |
 | DELETE | `/users/:userId`        | owners, supervisors |                                                    |
