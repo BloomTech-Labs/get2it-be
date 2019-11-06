@@ -1,43 +1,32 @@
 require("dotenv").config();
+const pg = require("pg");
+pg.defaults.ssl = true;
 
 module.exports = {
-    development: {
-      client: 'mysql',
-      version: '2.17.1',
-      useNullAsDefault: true,
-      connection: {
-        host: "localhost",
-        user: "root",
-        password: "get2itlabs",
-        database: "get2it",
-      },
-      // pool: {
-      //   afterCreate: (conn, done) => {
-      //     conn.run('PRAGMA foreign_keys = ON', done);
-      //   },
-      // },
-      migrations: {
-        directory: './database/migrations',
-      },
-      seeds: {
-        directory: './database/seeds',
-      },
+  development: {
+    client: "sqlite3",
+    connection: {
+      filename: "./database/database.sqlite3"
     },
-    production: {
-      client: 'mysql',
-      version: '2.17.1',
-      useNullAsDefault: true,
-      connection: {
-        host: "us-cdbr-iron-east-05.cleardb.net",
-        user: "b98d8364ee5a1c",
-        password: "7920ee1e",
-        database: "heroku_d1dd11759650ef7",
-      }
-    },
+    useNullAsDefault: true,
     migrations: {
-      directory: './database/migrations',
+      directory: "./database/migrations"
     },
     seeds: {
-      directory: './database/seeds',
+      directory: "./database/seeds"
+    }
+  },
+  production: {
+    client: "pg",
+    connection: process.env.DATABASE_URL,
+    pool: {
+      min: 2,
+      max: 10
     },
-  };
+    migrations: {
+      tableName: "knex_migrations",
+      directory: "./database/migrations"
+    },
+    useNullAsDefault: true
+  }
+};
