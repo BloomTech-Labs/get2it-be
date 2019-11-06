@@ -33,5 +33,11 @@ module.exports = {
         password: "7920ee1e",
         database: "heroku_d1dd11759650ef7",
       }
-    }
+    },
+    migrations: {
+      directory: './database/migrations',
+    },
+    seeds: {
+      directory: './database/seeds',
+    },
   };

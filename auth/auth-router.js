@@ -18,8 +18,8 @@ router.post('/register', (req, res) => {
         // userId: user.id,
         token});
     })
-    .catch(error => {
-      res.status(500).json(error);
+    .catch(({message}) => {
+      res.status(500).json(message);
     });
 });
 
