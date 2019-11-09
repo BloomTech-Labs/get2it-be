@@ -4,6 +4,7 @@ exports.up = function(knex) {
         tasks.increments();
 
         tasks.integer('user_id').unsigned().notNullable().references('id').inTable('users');
+        tasks.string('name').notNullable();
         tasks.boolean('status');
         tasks.date('date');
         tasks.string('start_time');
