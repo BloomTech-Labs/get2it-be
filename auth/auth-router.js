@@ -41,8 +41,8 @@ router.post('/login', (req, res) => {
         res.status(401).json({ message: 'Invalid Credentials' });
       }
     })
-    .catch(error => {
-      res.status(500).json(error);
+    .catch(({message}) => {
+      res.status(500).json(message);
     });
 });
 

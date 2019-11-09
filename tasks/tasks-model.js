@@ -1,11 +1,12 @@
 const knex = require('knex');
 const config = require('../knexfile');
-const db = knex(config.development);
+const environment = process.env.ENVIRONMENT || "production"
+const db = knex(config[environment]);
 
 module.exports = {
     find,
     findById,
-    findPosts,
+    findTasks,
     add,
     update,
     remove
@@ -16,30 +17,30 @@ function find() {
 }
 
 function findById(id) {
-    return db('posts')
+    return db('tasks')
         .where({ id })
         .first()
 }
 
-function findPosts(id) {
-    return db('posts')
+function findTasks(id) {
+    return db('tasks')
         .where({ user_id: id })
         .orderBy('id')
 }
 
-function add(post) {
-    return db('posts')
-        .insert(post)
+function add(task) {
+    return db('tasks')
+        .insert(task)
 }
 
-function update(post, id) {
-    return db('posts')
+function update(task, id) {
+    return db('tasks')
         .where({ id })
-        .update(post)
+        .update(task)
 }
 
 function remove(id) {
-    return db('posts')
+    return db('tasks')
         .where({ id })
         .del()
 }
