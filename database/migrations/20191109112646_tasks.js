@@ -9,7 +9,7 @@ exports.up = function(knex) {
         tasks.date('date');
         tasks.string('start_time');
         tasks.string('end_time');
-        tasks.string('label_color');
+        tasks.string('task_icon');
     })
 };
 

@@ -13,9 +13,9 @@ router.post('/:id/tasks', (req, res) => {
     const date = taskData.date;
     const start_time = taskData.start_time;
     const end_time = taskData.end_time;
-    const label_color = taskData.label_color
+    const task_icon = taskData.task_icon
     const { id } = req.params;
-    const task = {name: name, date: date, start_time: start_time, end_time: end_time, label_color: label_color, user_id:id}
+    const task = {name: name, date: date, start_time: start_time, end_time: end_time, task_icon: task_icon, user_id:id}
     console.log(id)
 
     Tasks.add(task)
