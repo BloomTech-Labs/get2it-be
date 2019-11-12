@@ -45,6 +45,13 @@ Takes an object including: { username: "username", password: "pass" }
 
 Returns JWT
 
+#### Edit user info
+PUT to https://get2it.herokuapp.com/api/auth/edit-profile/:id
+
+Where :id is user id
+
+Returns 1 for success
+
 #### Create a new task
 POST to https://get2it.herokuapp.com/api/users/:id/tasks
 
@@ -56,7 +63,7 @@ Takes an object including:
   date: "date-format",
   start_time: "optional",
   end_time: "optional",
-  label_color: "optional"
+  task_icon: "optional"
 }
 
 returns "task created successfully"

@@ -46,6 +46,33 @@ router.post('/login', (req, res) => {
     });
 });
 
+//change username or password
+router.put('/edit-profile/:id', (req, res) => {
+  const changes = req.body;
+  const { id } = req.params;
+  const hash = bcrypt.hashSync(changes.password, 10); // 2 ^ n
+  changes.password = hash;
+
+  Users.findById(id)
+  .then(user => {
+    if (user) {
+      Users.update(changes, id)
+      .then(updatedTask => {
+        res.json(updatedTask);
+      });
+    } else {
+      res.status(404).json({ message: 'Could not find user with given id' });
+    }
+  })
+  .catch (err => {
+    res.status(500).json({ message: 'Failed to update user' });
+  });
+})
+
+
+
+
+
 function generateToken(user) {
   const payload = {
     sub: user.id,
@@ -58,5 +85,6 @@ function generateToken(user) {
 
   return jwt.sign(payload, process.env.JWT_SECRET, options)
 }
+
 
 module.exports = router;
