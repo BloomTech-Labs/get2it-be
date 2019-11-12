@@ -56,7 +56,7 @@ Takes an object including:
   date: "date-format",
   start_time: "optional",
   end_time: "optional",
-  label_color: "optional"
+  task_icon: "optional"
 }
 
 returns "task created successfully"
