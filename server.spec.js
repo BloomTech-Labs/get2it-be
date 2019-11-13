@@ -12,5 +12,19 @@ describe('server.js', () => {
 
 			expect(response.status).toEqual(expectedStatusCode);
 		});
+
+		it('should return an html element', async () => {
+			const response = await request(server).get('/');
+
+			expect(response.type).toEqual("text/html");
+		});
+
+		it('should return a string, "It\'s alive!"', async () => {
+			const expectedBody = "It's alive!";
+
+			const response = await request(server).get('/');
+
+			expect(response.text).toEqual(expectedBody);
+		});
 	})
 })
