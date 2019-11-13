@@ -9,7 +9,7 @@
   "scripts": {
     "server": "nodemon",
     "start": "node index.js",
-    "test": "jest --watch --verbose"
+    "test": "cross-env DB_ENV=testing jest --watch --verbose"
   },
   "keywords": [],
   "author": "Lambda School",
@@ -25,9 +25,10 @@
     "sqlite3": "^4.1.0"
   },
   "jest": {
-    "testEnvirnoment": "node"
+    "testEnvironment": "node"
   },
   "devDependencies": {
+    "cross-env": "^6.0.3",
     "jest": "^24.9.0",
     "nodemon": "^1.19.1",
     "supertest": "^4.0.2"
