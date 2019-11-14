@@ -20,11 +20,11 @@ describe('server.js', () => {
 		});
 
 		it('should return a string, "It\'s alive!"', async () => {
-			const expectedBody = "It's alive!";
+			const expectedString = "It's alive!";
 
 			const response = await request(server).get('/');
 
-			expect(response.text).toEqual(expectedBody);
+			expect(response.text).toEqual(expectedString);
 		});
 	})
 })
