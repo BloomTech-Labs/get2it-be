@@ -29,4 +29,5 @@ export const loginWithDefaultUser = async () => {
 
 export const cleanExceptdefaultUser = async () => {
     let user = await getDefaultUser();
+    await User.where(!{"username": defaultUser.username}).del();
 }
