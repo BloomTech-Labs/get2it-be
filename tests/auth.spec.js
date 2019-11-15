@@ -15,7 +15,6 @@ describe('Auth API', () => {
 		return cleanExceptDefaultUser().then(() => {
 			return response.send(newUser)
 				.expect(expectedStatusCode).toBe(200);
-		})
-		
+		})	
 	})
 })
