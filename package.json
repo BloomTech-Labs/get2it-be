@@ -8,7 +8,8 @@
   "main": "index.js",
   "scripts": {
     "server": "nodemon",
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "jest --watch --verbose"
   },
   "keywords": [],
   "author": "Lambda School",
@@ -22,7 +23,12 @@
     "knex": "^0.19.5",
     "pg": "^7.12.1"
   },
+  "jest": {
+    "testEnvirnoment": "node"
+  },
   "devDependencies": {
-    "nodemon": "^1.19.1"
+    "jest": "^24.9.0",
+    "nodemon": "^1.19.1",
+    "supertest": "^4.0.2"
   }
 }
