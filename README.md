@@ -30,8 +30,6 @@ To get the server running locally:
 
 ## 2️⃣ Endpoints
 
-🚫This is a placeholder, replace the endpoints, access control, and description to match your project
-
 #### Register New User
 POST to https://get2it.herokuapp.com/api/auth/register
 
@@ -47,13 +45,49 @@ Takes an object including: { username: "username", password: "pass" }
 
 Returns JWT
 
+#### Edit user info
+PUT to https://get2it.herokuapp.com/api/auth/edit-profile/:id
 
-#### User Routes
+Where :id is user id
 
-| Method | Endpoint                | Access Control      | Description                        
-| POST   | `/users/register/owner` | none                | Creates a new user as owner of a new organization. |
-| PUT    | `/users/:userId`        | owners, supervisors |                                                    |
-| DELETE | `/users/:userId`        | owners, supervisors |                                                    |
+Returns 1 for success
+
+#### Create a new task
+POST to https://get2it.herokuapp.com/api/users/:id/tasks
+
+Where :id is user id
+
+Takes an object including:
+{
+  name: "required",
+  date: "date-format",
+  start_time: "optional",
+  end_time: "optional",
+  task_icon: "optional"
+}
+
+returns "task created successfully"
+
+#### Get tasks by user
+GET to https://get2it.herokuapp.com/api/users/:id/tasks
+
+Where :id is user id
+
+Returns an array of objects
+
+#### Update a task
+PUT to https://get2it.herokuapp.com/api/users/tasks/:id
+
+Where :id is task id
+
+Returns 1 for successful update
+
+#### Delete a task
+DELETE to https://get2it.herokuapp.com/api/users/tasks/:id
+
+Where :id is task id
+
+Returns "removed: 1" for successful delete
 
 # Data Model
 

@@ -1,12 +1,15 @@
 require("dotenv").config();
 const pg = require("pg");
-pg.defaults.ssl = true;
+// pg.defaults.ssl = true;
 
 module.exports = {
   development: {
-    client: "sqlite3",
+    client: "pg",
     connection: {
-      filename: "./database/database.sqlite3"
+      host: "localhost",
+      user: "postgres",
+      password: "get2it",
+      database: "get2it"
     },
     useNullAsDefault: true,
     migrations: {
@@ -26,6 +29,9 @@ module.exports = {
     migrations: {
       tableName: "knex_migrations",
       directory: "./database/migrations"
+    },
+    seeds: {
+      directory: "./database/seeds"
     },
     useNullAsDefault: true
   },
