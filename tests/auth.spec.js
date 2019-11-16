@@ -17,4 +17,8 @@ describe('Auth API', () => {
 				.expect(expectedStatusCode).toBe(200);
 		})	
 	})
+	
+	it ('should get the token', () => {
+		return cleanExceptDefaultUser().then
+	}) 
 })
