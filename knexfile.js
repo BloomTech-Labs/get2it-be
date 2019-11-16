@@ -34,5 +34,19 @@ module.exports = {
       directory: "./database/seeds"
     },
     useNullAsDefault: true
-  }
+  },
+  testing: {
+    client: "sqlite3",
+    connection: {
+      filename: "./database/database.sqlite3",
+    },
+    useNullAsDefault: true,
+    migrations: {
+      directory: "./database/migrations",
+      tableName: "knex_migrations",
+    },
+    seeds: {
+      directory: "./database/seeds/test",
+    },
+  },
 };
