@@ -35,10 +35,13 @@ module.exports = {
     },
     useNullAsDefault: true
   },
-  testing: {
-    client: "sqlite3",
+  test: {
+    client: "pg",
     connection: {
-      filename: "./database/database.sqlite3",
+      host: "localhost",
+      user: "test",
+      password: "get2it",
+      database: "get2it_test"
     },
     useNullAsDefault: true,
     migrations: {

@@ -1,24 +1,56 @@
-import { loginWithDefaultUser, cleanExceptDefaultUser } from './testHelper.spec';
+process.env.NODE_ENV = "test";
+const db = require("../db/index");
+const bcrypt = require('bcryptjs');
 
+// import { loginWithDefaultUser, cleanExceptDefaultUser } from './testHelper.spec';
+
+// use supertest to test HTTP requests/responses
 const request = require('supertest');
+// we also need our app for the correct routes!
+const server = require('../server');
 
-const server = require('./server');
+let auth = {};
+
+//before the tests run, create the users table
+beforeAll(async () => {
+	await db.query("CREATE TABLE users(id SERIAL PRIMARY KEY, username TEXT, password, TEXT)")
+});
+
+beforeEach(async () => {
+	const hashedPassword = await bcrypt.hash("secret", 1);
+	await db.query("INSERT INTO users (username, password) VALUES ('test', $1)",[
+		hashedPassword
+	]);
+	const response = await request(server)
+		.post("/auth/register")
+		.send({
+			username: "test",
+			password: "secret"
+		});
+	auth.token = response.body.token;
+	auth.current_user_id = jsonwebtoken.decode(auth.token).user_id;
+});
+
+// delete all users from users table
+afterEach(async () => {
+	await db.query("DELETE from users");
+});
+
+// drop the users table and close the db connection
+afterAll(async () => {
+	await db.query("DROP TABLE users");
+	db.end();
+});
+
 
 describe('Auth API', () => {
-	const apiBase = process.env.API_BASE || '/api';
-	const newUser = {"username": "new-user@test.com", "password": "test123"};
-
-	it ('should create user', async () => {
-		const expectedStatusCode = 200;
-		const response = await request(server).post(apiBase + '/auth/register');
-
-		return cleanExceptDefaultUser().then(() => {
-			return response.send(newUser)
-				.expect(expectedStatusCode).toBe(200);
-		})	
-	})
-	
-	it ('should get the token', () => {
-		return cleanExceptDefaultUser().then
-	}) 
-})
+	describe("GET /users/:id", async () => {
+		const response = await request(server)
+			.get(`/api/users/${auth.current_user_id}`)
+			// add an authorization header w/the token
+			.set("authorization", auth.token);
+		expect(response.body.length).toBe(1);
+		expect(response.statusCode).toBe(200)
+		expect(response.body.message).toBe(`Welcome ${user.username}!`);
+	});
+});

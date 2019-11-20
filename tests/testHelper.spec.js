@@ -1,5 +1,5 @@
-process.env.NODE_ENV = "testing";
-process.env.API_BASE = "/api";
+// process.env.NODE_ENV = "test";
+// process.env.API_BASE = "/api";
 
 import User from "../users/users-model";
 const request = require('supertest');
