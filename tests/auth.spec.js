@@ -1,6 +1,7 @@
-process.env.NODE_ENV = "test";
+// process.env.NODE_ENV = "testing";
 const db = require("../db/index");
 const bcrypt = require('bcryptjs');
+const jsonwebtoken = require("jsonwebtoken");
 
 // import { loginWithDefaultUser, cleanExceptDefaultUser } from './testHelper.spec';
 
@@ -44,13 +45,15 @@ afterAll(async () => {
 
 
 describe('Auth API', () => {
-	describe("GET /users/:id", async () => {
-		const response = await request(server)
+	describe("GET /users/:id", () => {
+		it ('should return a 200 status for authorized user',  async () => {
+			const response = await request(server)
 			.get(`/api/users/${auth.current_user_id}`)
 			// add an authorization header w/the token
 			.set("authorization", auth.token);
-		expect(response.body.length).toBe(1);
-		expect(response.statusCode).toBe(200)
-		expect(response.body.message).toBe(`Welcome ${user.username}!`);
-	});
-});
+			expect(response.body.length).toBe(1);
+			expect(response.statusCode).toBe(200);
+			expect(response.body.message).toBe(`Welcome ${user.username}!`);
+		})
+	}, 40000)
+})
