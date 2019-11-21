@@ -1,59 +1,79 @@
-// process.env.NODE_ENV = "testing";
+process.env.NODE_ENV = "testing";
 const db = require("../db/index");
-const bcrypt = require('bcryptjs');
+const request = require("supertest");
+const app = require("../server");
+// for decoding the token and easily extracting the id from the payload
 const jsonwebtoken = require("jsonwebtoken");
+// for hashing the password successfully when we create users
+const bcrypt = require("bcryptjs");
 
-// import { loginWithDefaultUser, cleanExceptDefaultUser } from './testHelper.spec';
-
-// use supertest to test HTTP requests/responses
-const request = require('supertest');
-// we also need our app for the correct routes!
-const server = require('../server');
-
+// our global object for storing auth information
 let auth = {};
 
-//before the tests run, create the users table
-beforeAll(async () => {
-	await db.query("CREATE TABLE users(id SERIAL PRIMARY KEY, username TEXT, password, TEXT)")
-});
 
+// before each request, create a user and log them in
 beforeEach(async () => {
-	const hashedPassword = await bcrypt.hash("secret", 1);
-	await db.query("INSERT INTO users (username, password) VALUES ('test', $1)",[
-		hashedPassword
-	]);
-	const response = await request(server)
-		.post("/auth/register")
-		.send({
-			username: "test",
-			password: "secret"
-		});
-	auth.token = response.body.token;
-	auth.current_user_id = jsonwebtoken.decode(auth.token).user_id;
+	let user = request.body;
+	const hash = bcrypt.hashSync(user.password, 10); 
+	user.password = hash;
+
+  const response = await request(app)
+    .post("/register")
+    .send({
+      username: "test",
+      password: "secret"
+    });
+  // take the result of the POST /users/auth which is a JWT
+  // store it in the auth object
+  auth.token = response.body.token;
+  // store the id from the token in the auth object
+  auth.current_user_id = jsonwebtoken.decode(auth.token).user_id;
 });
 
-// delete all users from users table
+// remove all the users
 afterEach(async () => {
-	await db.query("DELETE from users");
-});
-
-// drop the users table and close the db connection
-afterAll(async () => {
-	await db.query("DROP TABLE users");
-	db.end();
+  await db('users').truncate();
 });
 
 
-describe('Auth API', () => {
-	describe("GET /users/:id", () => {
-		it ('should return a 200 status for authorized user',  async () => {
-			const response = await request(server)
-			.get(`/api/users/${auth.current_user_id}`)
-			// add an authorization header w/the token
-			.set("authorization", auth.token);
-			expect(response.body.length).toBe(1);
-			expect(response.statusCode).toBe(200);
-			expect(response.body.message).toBe(`Welcome ${user.username}!`);
-		})
-	}, 40000)
-})
+describe("GET /edit-profile/:id", () => {
+  test("routes authorized user to edit profile page", async () => {
+    const response = await request(app)
+      .get(`/edit-profile/${auth.current_user_id}`)
+      // add an authorization header with the token
+      .set("authorization", auth.token);
+    expect(response.body.length).toBe(1);
+    expect(response.statusCode).toBe(200);
+  });
+});
+
+describe("GET /edit-profile/:id", () => {
+  test("unauthorized user cannot view edit profile page", async () => {
+    // don't add an authorization header with the token...see what happens!
+    const response = await request(app).get(`/edit-profile/${auth.current_user_id}`);
+    expect(response.statusCode).toBe(401);
+    expect(response.body.message).toBe("Unauthorized");
+  });
+});
+
+describe("GET /edit-profile/:id", () => {
+  test("authorizes only user with valid id", async () => {
+    const response = await request(app)
+      // add an authorization header with the token, but go to a different ID than the one stored in the token
+      .get(`/edit-profile/${auth.current_user_id}`)
+      .set("authorization", auth.token);
+    expect(response.statusCode).toBe(401);
+    expect(response.body.message).toBe("Unauthorized");
+  });
+});
+
+describe("GET /edit-profile/:id", () => {
+  test("authorizes only user with valid token", async () => {
+    const response = await request(app)
+      // add an authorization header with the token, and go to the same ID as the one stored in the token
+      .get(`/edit-profile/${auth.current_user_id}`)
+      .set("authorization", auth.token);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.message).toBe("You made it!");
+  });
+});
