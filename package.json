@@ -9,7 +9,7 @@
   "scripts": {
     "server": "nodemon",
     "start": "node index.js",
-    "test": "cross-env DB_ENV=testing jest --watch --verbose"
+    "test": "cross-env DB_ENV=testing jest --watch --verbose --testTimeout=10000"
   },
   "keywords": [],
   "author": "Lambda School",
@@ -24,7 +24,10 @@
     "pg": "^7.12.1"
   },
   "jest": {
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
   },
   "devDependencies": {
     "cross-env": "^6.0.3",
