@@ -7,7 +7,7 @@ const restricted = require('../auth/restricted-middleware.js');
 
 // for endpoints beginning with /api/users
 
-router.post('/:id/tasks', (req, res) => {
+router.post('/:id/tasks', restricted, (req, res) => {
     const taskData = req.body;
     const name = taskData.name;
     const date = taskData.date;
@@ -27,7 +27,7 @@ router.post('/:id/tasks', (req, res) => {
     })
 })
 
-router.get('/:id/tasks', (req, res) => {
+router.get('/:id/tasks', restricted, (req, res) => {
     const { id } = req.params;
   
     Tasks.findTasks(id)
@@ -43,9 +43,15 @@ router.get('/:id/tasks', (req, res) => {
     });
   });
 
-router.put('/tasks/:id', (req, res) => {
+router.put('/tasks/:id', restricted, (req, res) => {
+  const taskData = req.body;
+  const name = taskData.name;
+  const date = taskData.date;
+  const start_time = taskData.start_time;
+  const end_time = taskData.end_time;
+  const task_icon = taskData.task_icon
   const { id } = req.params;
-  const changes = req.body;
+  const changes = {name: name, date: date, start_time: start_time, end_time: end_time, task_icon: task_icon, user_id:id}
 
   Tasks.findById(id)
   .then(task => {
@@ -63,7 +69,7 @@ router.put('/tasks/:id', (req, res) => {
   });
 });
 
-router.delete('/tasks/:id', (req, res) => {
+router.delete('/tasks/:id', restricted, (req, res) => {
     const { id } = req.params;
   
     Tasks.remove(id)
