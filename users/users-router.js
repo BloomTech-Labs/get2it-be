@@ -52,7 +52,7 @@ router.put('/tasks/:id', restricted, (req, res) => {
   const end_time = taskData.end_time;
   const task_icon = taskData.task_icon
   const { id } = req.params;
-  const changes = {name: name, date: date, start_time: start_time, end_time: end_time, task_icon: task_icon, user_id:id}
+  const changes = {name: name, date: date, start_time: start_time, end_time: end_time, task_icon: task_icon, user_id: user_id}
 
   Tasks.findById(id)
   .then(task => {
