@@ -45,6 +45,7 @@ router.get('/:id/tasks', restricted, (req, res) => {
 
 router.put('/tasks/:id', restricted, (req, res) => {
   const taskData = req.body;
+  const user_id = user_id;
   const name = taskData.name;
   const date = taskData.date;
   const start_time = taskData.start_time;
