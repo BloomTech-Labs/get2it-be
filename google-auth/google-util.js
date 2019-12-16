@@ -10,7 +10,7 @@ const googleConfig = {
 
 // This scope tells google what information we want to request
 const defaultScope = [
-	'https://www.googleapis.com/auth/userinfo.email',
+  'https://www.googleapis.com/auth/userinfo.email',
   'https://www.googleapis.com/auth/calendar',
   'https://www.googleapis.com/auth/calendar.events',
 ];
