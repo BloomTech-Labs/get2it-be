@@ -50,8 +50,8 @@ router.post('/login', (req, res) => {
 router.put('/edit-profile/:id', (req, res) => {
   const changes = req.body;
   const { id } = req.params;
-  // const hash = bcrypt.hashSync(changes.password, 10); // 2 ^ n
-  // changes.password = hash;
+  const hash = bcrypt.hashSync(changes.password, 10); // 2 ^ n
+  changes.password = hash;
 
   Users.findById(id)
   .then(user => {
