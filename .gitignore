@@ -86,3 +86,5 @@ typings/
 
 # DynamoDB Local files
 .dynamodb/
+
+google-auth/client_secret_960984927329-dqgdjaj4bkp58ulvol8l9m14ltelgqao.apps.googleusercontent.com1.json
