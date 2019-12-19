@@ -1,4 +1,5 @@
-import { google } from 'googleapis';
+// import { google } from 'googleapis';
+const {google} = require('googleapis');
 
 
 // Configure Google library with our credentials
