@@ -1,6 +1,6 @@
 
 exports.up = function(knex) {
-    return knex.schema.createTable('tasks', tasks => {
+    return knex.schema.alterTable('tasks', tasks => {
 
         tasks.integer('timeLeft');
         tasks.boolean('initialNotify').defaultTo(false);
