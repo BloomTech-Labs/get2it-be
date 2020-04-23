@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const {check, validationResult} = require('express-validator/check')
 
 const Users = require('../users/users-model.js');
 
@@ -14,8 +15,19 @@ router.get('/users', (req, res) => {
     })
 })
 
+const validationRules = [
+  check('email').isEmail(),
+  check('password').isLength({ min: 6 }),
+  check('username').isAlphanumeric(),
+]
+
+const validationLogin = [
+  check('email').isEmail(),
+  check('password').isLength({ min: 6 })
+]
+
 // for endpoints beginning with /api/auth
-router.post('/register', (req, res) => {
+router.post('/register', validationRules, (req, res) => {
   let newUser = req.body;
   const hash = bcrypt.hashSync(newUser.password, 10); // 2 ^ n
   newUser.password = hash;
@@ -29,11 +41,13 @@ router.post('/register', (req, res) => {
         token});
     })
     .catch(({message}) => {
-      res.status(500).json(message);
+      if (validationResult(req).array().length !== 0) {
+        res.status(500).json(message);
+      }
     });
 });
 
-router.post('/login', (req, res) => {
+router.post('/login', validationLogin, (req, res) => {
   let { email, password } = req.body;
 
   Users.findBy({ email })
@@ -92,7 +106,6 @@ router.delete("/users/:id", (req, res) => {
   })
 })
 
-
 function generateToken(user) {
   const payload = {
     sub: user.id,
@@ -106,6 +119,8 @@ function generateToken(user) {
 
   return jwt.sign(payload, process.env.JWT_SECRET, options)
 }
+
+
 
 
 module.exports = router;
