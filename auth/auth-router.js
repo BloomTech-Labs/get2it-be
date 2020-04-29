@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const {check, validationResult} = require('express-validator/check')
+const { check, validationResult } = require('express-validator')
 
 const Users = require('../users/users-model.js');
 
@@ -11,7 +11,7 @@ router.get('/users', (req, res) => {
       res.status(200).json(users);
     })
     .catch(err => {
-      res.status(404).json({message: 'users not found'});
+      res.status(404).json({ message: 'users not found' });
     })
 })
 
@@ -38,9 +38,10 @@ router.post('/register', validationRules, (req, res) => {
       res.status(201).json({
         user: saved,
         // userId: user.id,
-        token});
+        token
+      });
     })
-    .catch(({message}) => {
+    .catch(({ message }) => {
       if (validationResult(req).array().length !== 0) {
         res.status(500).json(message);
       }
@@ -65,7 +66,7 @@ router.post('/login', validationLogin, (req, res) => {
         res.status(401).json({ message: 'Invalid Credentials' });
       }
     })
-    .catch(({message}) => {
+    .catch(({ message }) => {
       res.status(500).json(message);
     });
 });
@@ -75,35 +76,36 @@ router.put('/users/:id', (req, res) => {
   const changes = req.body;
   const { id } = req.params;
   if (changes.password !== undefined) {
-  const hash = bcrypt.hashSync(changes.password, 10); // 2 ^ n
-  changes.password = hash};
+    const hash = bcrypt.hashSync(changes.password, 10); // 2 ^ n
+    changes.password = hash
+  };
 
   Users.findById(id)
-  .then(user => {
-    if (user) {
-      Users.update(changes, id)
-      .then(updatedTask => {
-        res.json(updatedTask);
-      });
-    } else {
-      res.status(404).json({ message: 'Could not find user with given id' });
-    }
-  })
-  .catch (err => {
-    res.status(500).json({ message: 'Failed to update user' });
-  });
+    .then(user => {
+      if (user) {
+        Users.update(changes, id)
+          .then(updatedTask => {
+            res.json(updatedTask);
+          });
+      } else {
+        res.status(404).json({ message: 'Could not find user with given id' });
+      }
+    })
+    .catch(err => {
+      res.status(500).json({ message: 'Failed to update user' });
+    });
 })
 
 //deletes a user
 router.delete("/users/:id", (req, res) => {
   const { id } = req.params
   usersData.deleteUser(id)
-  .then(users => {
-    res.status(200).json(users)
-  })
-  .catch(({ name, message, code, stack }) => {
-    res.status(500).json({ name, message, code, stack })
-  })
+    .then(users => {
+      res.status(200).json(users)
+    })
+    .catch(({ name, message, code, stack }) => {
+      res.status(500).json({ name, message, code, stack })
+    })
 })
 
 function generateToken(user) {
