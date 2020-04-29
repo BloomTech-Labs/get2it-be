@@ -4,13 +4,16 @@ const pg = require("pg");
 
 module.exports = {
   development: {
-    client: "pg",
-    connection: {
-      host: "localhost",
-      user: "postgres",
-      password: "get2it",
-      database: "get2it"
-    },
+    client: "sqlite3",
+    connection: {filename: './database/database.sqlite3'},
+    // connection: {
+    //   host: "localhost",
+    //   // user: "postgres",
+    //   // password: "get2it",
+    //   // database: "get2it",
+    //   // filename: './database/database.sqlite3'
+    //
+    // },
     useNullAsDefault: true,
     migrations: {
       directory: "./database/migrations"
