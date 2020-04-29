@@ -1,32 +1,59 @@
 const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { check, validationResult } = require('express-validator')
 
 const Users = require('../users/users-model.js');
 
-// for endpoints beginning with /api/auth
-router.post('/register', (req, res) => {
-  let user = req.body;
-  const hash = bcrypt.hashSync(user.password, 10); // 2 ^ n
-  user.password = hash;
+router.get('/users', (req, res) => {
+  Users.find()
+    .then(users => {
+      res.status(200).json(users);
+    })
+    .catch(err => {
+      res.status(404).json({ message: 'users not found' });
+    })
+})
 
-  Users.add(user)
+const validationRules = [
+  check('email').isEmail(),
+  check('password').isLength({ min: 6 }),
+  check('username').isAlphanumeric(),
+]
+
+const validationLogin = [
+  check('email').isEmail(),
+  check('password').isLength({ min: 6 })
+]
+
+// for endpoints beginning with /api/auth
+router.post('/register', validationRules, (req, res) => {
+  let newUser = req.body;
+  const hash = bcrypt.hashSync(newUser.password, 10); // 2 ^ n
+  newUser.password = hash;
+  console.log("here")
+
+  Users.add(newUser)
     .then(saved => {
       const token = generateToken(saved)
       res.status(201).json({
         user: saved,
-        // userId: user.id,
-        token});
+        token
+      });
+      console.log("Created User Succesfully")
     })
-    .catch(({message}) => {
-      res.status(500).json(message);
+    .catch(({ message }) => {
+      console.log("Catch error from Line 46 of register in auth-router.js:", message)
+      if (validationResult(req).array().length !== 0) {
+        res.status(500).json(message);
+      }
     });
 });
 
-router.post('/login', (req, res) => {
-  let { username, password } = req.body;
+router.post('/login', validationLogin, (req, res) => {
+  let { email, password } = req.body;
 
-  Users.findBy({ username })
+  Users.findBy({ email })
     .first()
     .then(user => {
       if (user && bcrypt.compareSync(password, user.password)) {
@@ -41,43 +68,53 @@ router.post('/login', (req, res) => {
         res.status(401).json({ message: 'Invalid Credentials' });
       }
     })
-    .catch(({message}) => {
+    .catch(({ message }) => {
       res.status(500).json(message);
     });
 });
 
 //change username or password
-router.put('/edit-profile/:id', (req, res) => {
+router.put('/users/:id', (req, res) => {
   const changes = req.body;
   const { id } = req.params;
   if (changes.password !== undefined) {
-  const hash = bcrypt.hashSync(changes.password, 10); // 2 ^ n
-  changes.password = hash};
+    const hash = bcrypt.hashSync(changes.password, 10); // 2 ^ n
+    changes.password = hash
+  };
 
   Users.findById(id)
-  .then(user => {
-    if (user) {
-      Users.update(changes, id)
-      .then(updatedTask => {
-        res.json(updatedTask);
-      });
-    } else {
-      res.status(404).json({ message: 'Could not find user with given id' });
-    }
-  })
-  .catch (err => {
-    res.status(500).json({ message: 'Failed to update user' });
-  });
+    .then(user => {
+      if (user) {
+        Users.update(changes, id)
+          .then(updatedTask => {
+            res.json(updatedTask);
+          });
+      } else {
+        res.status(404).json({ message: 'Could not find user with given id' });
+      }
+    })
+    .catch(err => {
+      res.status(500).json({ message: 'Failed to update user' });
+    });
 })
 
-
-
-
+//deletes a user
+router.delete("/users/:id", (req, res) => {
+  const { id } = req.params
+  usersData.deleteUser(id)
+    .then(users => {
+      res.status(200).json(users)
+    })
+    .catch(({ name, message, code, stack }) => {
+      res.status(500).json({ name, message, code, stack })
+    })
+})
 
 function generateToken(user) {
   const payload = {
     sub: user.id,
-    username: user.username
+    username: user.username,
+    email: user.email
   }
 
   const options = {
@@ -86,6 +123,4 @@ function generateToken(user) {
 
   return jwt.sign(payload, process.env.JWT_SECRET, options)
 }
-
-
 module.exports = router;
