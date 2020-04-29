@@ -28,20 +28,22 @@ const validationLogin = [
 
 // for endpoints beginning with /api/auth
 router.post('/register', validationRules, (req, res) => {
-  let user = req.body;
-  const hash = bcrypt.hashSync(user.password, 10); // 2 ^ n
-  user.password = hash;
+  let newUser = req.body;
+  const hash = bcrypt.hashSync(newUser.password, 10); // 2 ^ n
+  newUser.password = hash;
+  console.log("here")
 
-  Users.add(user)
+  Users.add(newUser)
     .then(saved => {
       const token = generateToken(saved)
       res.status(201).json({
         user: saved,
-        // userId: user.id,
         token
       });
+      console.log("Created User Succesfully")
     })
     .catch(({ message }) => {
+      console.log("Catch error from Line 46 of register in auth-router.js:", message)
       if (validationResult(req).array().length !== 0) {
         res.status(500).json(message);
       }
@@ -49,9 +51,9 @@ router.post('/register', validationRules, (req, res) => {
 });
 
 router.post('/login', validationLogin, (req, res) => {
-  let { username, password } = req.body;
+  let { email, password } = req.body;
 
-  Users.findBy({ username })
+  Users.findBy({ email })
     .first()
     .then(user => {
       if (user && bcrypt.compareSync(password, user.password)) {
@@ -72,7 +74,7 @@ router.post('/login', validationLogin, (req, res) => {
 });
 
 //change username or password
-router.put('/edit-profile/:id', (req, res) => {
+router.put('/users/:id', (req, res) => {
   const changes = req.body;
   const { id } = req.params;
   if (changes.password !== undefined) {
@@ -111,7 +113,8 @@ router.delete("/users/:id", (req, res) => {
 function generateToken(user) {
   const payload = {
     sub: user.id,
-    username: user.username
+    username: user.username,
+    email: user.email
   }
 
   const options = {
@@ -120,6 +123,4 @@ function generateToken(user) {
 
   return jwt.sign(payload, process.env.JWT_SECRET, options)
 }
-
-
 module.exports = router;
