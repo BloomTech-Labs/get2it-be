@@ -3,7 +3,7 @@ const helmet = require('helmet');
 const cors = require('cors');
 require('dotenv').config();
 
-const authenticate = require('../auth/restricted-middleware.js');
+const authenticate = require('./auth/restricted-middleware.js');
 const authRouter = require('./auth/auth-router');
 const usersRouter = require('./users/users-router');
 
