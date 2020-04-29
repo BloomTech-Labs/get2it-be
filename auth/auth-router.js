@@ -1,38 +1,16 @@
 const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const {check, validationResult} = require('express-validator/check')
 
 const Users = require('../users/users-model.js');
 
-router.get('/users', (req, res) => {
-  Users.find()
-    .then(users => {
-      res.status(200).json(users);
-    })
-    .catch(err => {
-      res.status(404).json({message: 'users not found'});
-    })
-})
-
-const validationRules = [
-  check('email').isEmail(),
-  check('password').isLength({ min: 6 }),
-  check('username').isAlphanumeric(),
-]
-
-const validationLogin = [
-  check('email').isEmail(),
-  check('password').isLength({ min: 6 })
-]
-
 // for endpoints beginning with /api/auth
-router.post('/register', validationRules, (req, res) => {
-  let newUser = req.body;
-  const hash = bcrypt.hashSync(newUser.password, 10); // 2 ^ n
-  newUser.password = hash;
+router.post('/register', (req, res) => {
+  let user = req.body;
+  const hash = bcrypt.hashSync(user.password, 10); // 2 ^ n
+  user.password = hash;
 
-  Users.add(newUser)
+  Users.add(user)
     .then(saved => {
       const token = generateToken(saved)
       res.status(201).json({
@@ -41,16 +19,14 @@ router.post('/register', validationRules, (req, res) => {
         token});
     })
     .catch(({message}) => {
-      if (validationResult(req).array().length !== 0) {
-        res.status(500).json(message);
-      }
+      res.status(500).json(message);
     });
 });
 
-router.post('/login', validationLogin, (req, res) => {
-  let { email, password } = req.body;
+router.post('/login', (req, res) => {
+  let { username, password } = req.body;
 
-  Users.findBy({ email })
+  Users.findBy({ username })
     .first()
     .then(user => {
       if (user && bcrypt.compareSync(password, user.password)) {
@@ -71,7 +47,7 @@ router.post('/login', validationLogin, (req, res) => {
 });
 
 //change username or password
-router.put('/users/:id', (req, res) => {
+router.put('/edit-profile/:id', (req, res) => {
   const changes = req.body;
   const { id } = req.params;
   if (changes.password !== undefined) {
@@ -94,23 +70,14 @@ router.put('/users/:id', (req, res) => {
   });
 })
 
-//deletes a user
-router.delete("/users/:id", (req, res) => {
-  const { id } = req.params
-  usersData.deleteUser(id)
-  .then(users => {
-    res.status(200).json(users)
-  })
-  .catch(({ name, message, code, stack }) => {
-    res.status(500).json({ name, message, code, stack })
-  })
-})
+
+
+
 
 function generateToken(user) {
   const payload = {
     sub: user.id,
-    username: user.username,
-    email: user.email
+    username: user.username
   }
 
   const options = {
@@ -119,8 +86,6 @@ function generateToken(user) {
 
   return jwt.sign(payload, process.env.JWT_SECRET, options)
 }
-
-
 
 
 module.exports = router;
