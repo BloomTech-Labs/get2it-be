@@ -28,11 +28,11 @@ const validationLogin = [
 
 // for endpoints beginning with /api/auth
 router.post('/register', validationRules, (req, res) => {
-  let newUser = req.body;
-  const hash = bcrypt.hashSync(newUser.password, 10); // 2 ^ n
-  newUser.password = hash;
+  let user = req.body;
+  const hash = bcrypt.hashSync(user.password, 10); // 2 ^ n
+  user.password = hash;
 
-  Users.add(newUser)
+  Users.add(user)
     .then(saved => {
       const token = generateToken(saved)
       res.status(201).json({
@@ -49,9 +49,9 @@ router.post('/register', validationRules, (req, res) => {
 });
 
 router.post('/login', validationLogin, (req, res) => {
-  let { email, password } = req.body;
+  let { username, password } = req.body;
 
-  Users.findBy({ email })
+  Users.findBy({ username })
     .first()
     .then(user => {
       if (user && bcrypt.compareSync(password, user.password)) {
@@ -72,7 +72,7 @@ router.post('/login', validationLogin, (req, res) => {
 });
 
 //change username or password
-router.put('/users/:id', (req, res) => {
+router.put('/edit-profile/:id', (req, res) => {
   const changes = req.body;
   const { id } = req.params;
   if (changes.password !== undefined) {
@@ -111,8 +111,7 @@ router.delete("/users/:id", (req, res) => {
 function generateToken(user) {
   const payload = {
     sub: user.id,
-    username: user.username,
-    email: user.email
+    username: user.username
   }
 
   const options = {
@@ -121,8 +120,6 @@ function generateToken(user) {
 
   return jwt.sign(payload, process.env.JWT_SECRET, options)
 }
-
-
 
 
 module.exports = router;

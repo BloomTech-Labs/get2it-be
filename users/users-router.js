@@ -33,7 +33,7 @@ router.post('/:id/tasks', restricted, (req, res) => {
 
 router.get('/:id/tasks', restricted, (req, res) => {
     const { id } = req.params;
-
+  
     Tasks.findTasks(id)
     .then(tasks => {
       if (tasks.length) {
@@ -80,7 +80,7 @@ router.put('/tasks/:id', restricted, (req, res) => {
 
 router.delete('/tasks/:id', restricted, (req, res) => {
     const { id } = req.params;
-
+  
     Tasks.remove(id)
     .then(deleted => {
       if (deleted) {
@@ -94,37 +94,6 @@ router.delete('/tasks/:id', restricted, (req, res) => {
     });
   });
 
-  // Validation MiddleWare
-
-  async function validateUser(req, res, next) {
-    // validates all POST requests for new task(not new user)
-    const { id } = req.params;
-    const issue = { ...req.body, user_id: id} ;
-    console.log(`validate issue:`, issue)
-
-    const userCheck = await Users.findById(id)
-
-      !userCheck
-      ? res.status(404).json({ message: "User does not exist!" })
-      : !issue ?
-      res.status(404).json({ message: "Class does not exist!" })
-      : !issue.name || !issue.date || !issue.start_time || !issue.end_time || !issue.task_icon
-      ? res.status(406).json({ message: "Please make sure the required fields are completed. " })
-      : next();
-  }
-
-  async function validateTask(req, res, next) {
-    // validates all POST requests for new task (not new user)
-    const { id } = req.params;
-    const tasks = req.body;
-    console.log(`validate task:`, tasks)
-
-    const issueCheck = await Tasks.findById(id)
-
-      !issueCheck
-      ? res.status(404).json({ message: "Task does not exist!" })
-      : next();
-  }
 
 
 module.exports = router;
