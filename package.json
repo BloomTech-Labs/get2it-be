@@ -8,8 +8,7 @@
   "main": "index.js",
   "heroku-run-build-script": true,
   "scripts": {
-    "build": "npm run start",
-    "server": "nodemon",
+    "server": "nodemon index.js",
     "start": "node index.js",
     "test": "cross-env DB_ENV=testing jest --watch --verbose --testTimeout=10000"
   },
