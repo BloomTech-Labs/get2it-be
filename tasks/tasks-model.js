@@ -1,8 +1,3 @@
-const knex = require('knex');
-const config = require('../knexfile');
-const environment = process.env.ENVIRONMENT || "production"
-const db = knex(config[environment]);
-
 module.exports = {
     find,
     findById,
