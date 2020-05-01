@@ -6,8 +6,9 @@
     "node": "10.15.3"
   },
   "main": "index.js",
+  "heroku-run-build-script": true,
   "scripts": {
-    "server": "nodemon",
+    "server": "nodemon index.js",
     "start": "node index.js",
     "test": "cross-env DB_ENV=testing jest --watch --verbose --testTimeout=10000"
   },
@@ -23,8 +24,8 @@
     "helmet": "^3.19.0",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.19.5",
-    "pg": "^7.18.2",
-    "sqlite3": "^4.1.1"
+    "pg": "^7.12.1",
+    "sqlite3": "^4.2.0"
   },
   "jest": {
     "testEnvironment": "node",
