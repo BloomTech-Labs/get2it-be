@@ -18,7 +18,7 @@ router.get('/users', (req, res) => {
 const validationRules = [
   check('email').isEmail(),
   check('password').isLength({ min: 6 }),
-  check('username').isAlphanumeric(),
+  check('displayName').isAlphanumeric(),
 ]
 
 const validationLogin = [
@@ -113,7 +113,7 @@ router.delete("/users/:id", (req, res) => {
 function generateToken(user) {
   const payload = {
     sub: user.id,
-    username: user.username,
+    displayName: user.displayName,
     email: user.email
   }
 
