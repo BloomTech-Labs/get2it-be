@@ -1,4 +1,5 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/660d94d0066a658ae731/maintainability)](https://codeclimate.com/github/Lambda-School-Labs/get2it-be/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/660d94d0066a658ae731/test_coverage)](https://codeclimate.com/github/Lambda-School-Labs/get2it-be/test_coverage)
 
 🚫 Note: All lines that start with 🚫 are instructions and should be deleted before this is posted to your portfolio. This is intended to be a guideline. Feel free to add your own flare to it.
 
