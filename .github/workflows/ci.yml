@@ -17,7 +17,7 @@ jobs:
         - uses: paambaati/codeclimate-action@v2.4.0
           env: 
             CC_TEST_REPORTER_ID: ${{ secrets.CodeClimateReporterId }}
-        with:
-          coverageCommand: yarn run coverage
-          coverageLocations: "./coverage/clover.xml:clover"
-          debug: true
+          with:
+            coverageCommand: yarn run coverage
+            coverageLocations: "./coverage/clover.xml:clover"
+            debug: true
