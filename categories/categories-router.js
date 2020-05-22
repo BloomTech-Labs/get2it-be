@@ -26,7 +26,7 @@ router.get('/:id/categories', restricted, (req, res) => {
   Categories.findCategories(id)
     .then(categories => {
       if(categories.length) {
-        res.json(tasks);
+        res.json(categories);
       } else {
         res.status(404).json({message: 'Could not find categories for given user'})
       }
@@ -47,11 +47,11 @@ router.put('/categories/:id', restricted, (req, res) => {
             res.json(updatedCategory)
           });
       } else {
-        res.status(404).json({message: 'Could not find task with given id'});
+        res.status(404).json({message: 'Could not find category with given id'});
       }
     })
     .catch(err => {
-      res.status(500).json({message: 'Failed to update task'});
+      res.status(500).json({message: 'Failed to update category'});
     });
 });
 
@@ -67,7 +67,7 @@ router.delete('/categories/:id', restricted, (req, res) => {
       }
     })
     .catch(err => {
-      res.status(500).json({message: 'Failed to delete task'});
+      res.status(500).json({message: 'Failed to delete category'});
     });
 });
 
