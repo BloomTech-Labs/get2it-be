@@ -107,7 +107,7 @@ async function validateUser(req, res, next) {
   !userCheck
     ? res.status(404).json({ message: "User does not exist!" })
     : !issue ?
-      res.status(404).json({ message: "Class does not exist!" })
+      res.status(404).json({ message: "Task does not exist!" })
       : !issue.name || !issue.date || !issue.start_time || !issue.end_time || !issue.task_icon
         ? res.status(406).json({ message: "Please make sure the required fields are completed. " })
         : next();
