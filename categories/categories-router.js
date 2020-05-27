@@ -11,7 +11,7 @@ router.post('/:id/categories', restricted, (req, res) => {
   const {id} = req.params;
   const issue = {...req.body, user_id: id}
 
-  Categories.add(category)
+  Categories.add(issue)
     .then(category => {
       res.status(201).json('Category created successfully');
     })
