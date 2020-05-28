@@ -18,8 +18,9 @@ router.post('/:id/tasks', restricted, (req, res) => {
   const timeLeft = taskData.timeLeft
   const initialNotify = taskData.initialNotify
   const notifyOn = taskData.notifyOn
+  const catId = taskData.category_id
   const { id } = req.params;
-  const task = { name: name, status: status, date: date, start_time: start_time, end_time: end_time, task_icon: task_icon, timeLeft: timeLeft, initialNotify: initialNotify, notifyOn: notifyOn, user_id: id }
+  const task = { name: name, status: status, date: date, start_time: start_time, end_time: end_time, task_icon: task_icon, timeLeft: timeLeft, initialNotify: initialNotify, notifyOn: notifyOn, user_id: id, category_id: catId}
   console.log(id)
 
   Tasks.add(task)
@@ -59,8 +60,9 @@ router.put('/tasks/:id', restricted, (req, res) => {
   const timeLeft = taskData.timeLeft
   const initialNotify = taskData.initialNotify
   const notifyOn = taskData.notifyOn
+  const catId = taskData.catId
   const { id } = req.params;
-  const changes = { name: name, status: status, date: date, start_time: start_time, end_time: end_time, task_icon: task_icon, timeLeft: timeLeft, initialNotify: initialNotify, notifyOn: notifyOn, user_id: user_id }
+  const changes = { name: name, status: status, date: date, start_time: start_time, end_time: end_time, task_icon: task_icon, timeLeft: timeLeft, initialNotify: initialNotify, notifyOn: notifyOn, user_id: user_id, category_id: catId }
 
   Tasks.findById(id)
     .then(task => {
