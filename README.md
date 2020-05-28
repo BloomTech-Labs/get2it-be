@@ -3,7 +3,7 @@
 
 # API Documentation
 
-#### 1️⃣ Backend deployed at [Heroku]https://get2it.herokuapp.com/api <br>
+#### 1️⃣ Backend deployed at [Heroku]https://get2itpt9.herokuapp.com/api <br>
 
 ## 1️⃣ Getting started
 
@@ -17,7 +17,8 @@ Installing
 4. install knex globally: `npm i -g knex`
 5. construct a copy of the data base in console: `knex migrate:latest`
 6. populate database with dummy/seeded data: `knex seed:run`
-7. run the server: `npm run server`. Server port default is 3300.
+7. create a .env file and include JWT_SECRET='' 
+8. run the server: `npm run server`. Server port default is 3300.
 
 ### Backend framework goes here
 
@@ -31,7 +32,7 @@ Installing
 ## 2️⃣ Endpoints
 
 #### Register New User
-#### **POST** to *https://get2it.herokuapp.com/api/auth/register*
+#### **POST** to *https://get2itpt9.herokuapp.com/api/auth/register*
 
 Takes an object including: { username: "username", email: "email@email.com", password: "pass" }
 
@@ -59,7 +60,7 @@ Returns newly created user object as well as JSON Web Token (JWT)
 
 
 #### Login Existing User
-POST to https://get2it.herokuapp.com/api/auth/login
+POST to https://get2itpt9.herokuapp.com/api/auth/login
 
 Takes an object including: { email: "email@email.com", password: "pass" }
 
