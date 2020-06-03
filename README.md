@@ -1,23 +1,24 @@
-🚫 Note: All lines that start with 🚫 are instructions and should be deleted before this is posted to your portfolio. This is intended to be a guideline. Feel free to add your own flare to it.
-
-🚫 The numbers 1️⃣ through 3️⃣ next to each item represent the week that part of the docs needs to be comepleted by.  Make sure to delete the numbers by the end of Labs.
-
-🚫 Each student has a required minimum number of meaningful PRs each week per the rubric.  Contributing to docs does NOT count as a PR to meet your weekly requirements.
+[![Maintainability](https://api.codeclimate.com/v1/badges/660d94d0066a658ae731/maintainability)](https://codeclimate.com/github/Lambda-School-Labs/get2it-be/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/660d94d0066a658ae731/test_coverage)](https://codeclimate.com/github/Lambda-School-Labs/get2it-be/test_coverage)
 
 # API Documentation
 
-#### 1️⃣ Backend deployed at [🚫name service here]https://get2it.herokuapp.com/api <br>
+#### 1️⃣ Backend deployed at [Heroku]https://get2itpt9.herokuapp.com/api <br>
 
 ## 1️⃣ Getting started
 
-To get the server running locally:
+## **Local Server Installation**
+For developing and testing purposes, please follow the instructions below to install a version to your local machine.
 
-🚫 adjust these scripts to match your project
-
-- Clone this repo
-- **npm install** to install all required dependencies
-- **npm run server** to start the local server
-- **npm test** to start server using testing environment
+Installing
+1. download/clone backend repo
+2. navigate to cloned repo
+3. install dependencies on your console: `npm i`
+4. install knex globally: `npm i -g knex`
+5. construct a copy of the data base in console: `knex migrate:latest`
+6. populate database with dummy/seeded data: `knex seed:run`
+7. create a .env file and include JWT_SECRET='' 
+8. run the server: `npm run server`. Server port default is 3300.
 
 ### Backend framework goes here
 
@@ -31,17 +32,37 @@ To get the server running locally:
 ## 2️⃣ Endpoints
 
 #### Register New User
-POST to https://get2it.herokuapp.com/api/auth/register
+#### **POST** to *https://get2itpt9.herokuapp.com/api/auth/register*
 
-Takes an object including: { username: "username", password: "pass" }
+Takes an object including: { username: "username", email: "email@email.com", password: "pass" }
+
+Request: `req.body`
+
+```
+{
+  username: "test1",        // String Required
+  password: "Test123"      // String Required
+  email: "email@email.com"        // String Required
+}
+```
+
+Response: `res.body`
+```
+{
+  "id": 6,
+  "username": "test1",
+  "email": "email@email.com"
+}
+  // password not returned, but is stored encrypted on database.
+```
 
 Returns newly created user object as well as JSON Web Token (JWT)
 
 
 #### Login Existing User
-POST to https://get2it.herokuapp.com/api/auth/login
+POST to https://get2itpt9.herokuapp.com/api/auth/login
 
-Takes an object including: { username: "username", password: "pass" }
+Takes an object including: { email: "email@email.com", password: "pass" }
 
 Returns JWT
 
@@ -130,44 +151,37 @@ Returns "removed: 1" for successful delete
 
 ## 2️⃣ Actions
 
-🚫 This is an example, replace this with the actions that pertain to your backend
+// Users
+find()
+findBy(filter)
+add(user)
+findById(id)
+update(changes, id)
+deleteUser(id)
 
-`getOrgs()` -> Returns all organizations
+// Tasks
+find()
+findById(id)
+findTasks(id)
+add(task)
+update(task, id)
+remove(id)
 
-`getOrg(orgId)` -> Returns a single organization by ID
-
-`addOrg(org)` -> Returns the created org
-
-`updateOrg(orgId)` -> Update an organization by ID
-
-`deleteOrg(orgId)` -> Delete an organization by ID
-<br>
-<br>
-<br>
-`getUsers(orgId)` -> if no param all users
-
-`getUser(userId)` -> Returns a single user by user ID
-
-`addUser(user object)` --> Creates a new user and returns that user. Also creates 7 availabilities defaulted to hours of operation for their organization.
-
-`updateUser(userId, changes object)` -> Updates a single user by ID.
-
-`deleteUser(userId)` -> deletes everything dependent on the user
+// Categories
+find()
+findById(id)
+findCategories(id)
+add(category)
+update(category, id)
+remove(id)
 
 ## 3️⃣ Environment Variables
 
 In order for the app to function correctly, the user must set up their own environment variables.
 
 create a .env file that includes the following:
-
-🚫 These are just examples, replace them with the specifics for your app
-    
-    *  STAGING_DB - optional development db for using functionality not available in SQLite
-    *  NODE_ENV - set to "development" until ready for "production"
     *  JWT_SECRET - you can generate this by using a python shell and running import random''.join([random.SystemRandom().choice('abcdefghijklmnopqrstuvwxyz0123456789!@#\$%^&amp;*(-*=+)') for i in range(50)])
-    *  SENDGRID_API_KEY - this is generated in your Sendgrid account
-    *  stripe_secret - this is generated in the Stripe dashboard
-    
+
 ## Contributing
 
 When contributing to this repository, please first discuss the change you wish to make via issue, email, or any other method with the owners of this repository before making a change.
@@ -206,5 +220,4 @@ These contribution guidelines have been adapted from [this good-Contributing.md-
 
 ## Documentation
 
-See [Frontend Documentation](🚫link to your frontend readme here) for details on the fronend of our project.
-🚫 Add DS iOS and/or Andriod links here if applicable.
+See [Frontend Documentation](https://github.com/Lambda-School-Labs/get2it-fe/blob/master/README.md) for details on the fronend of our project.

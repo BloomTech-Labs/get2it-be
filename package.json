@@ -1,5 +1,5 @@
 {
-  "name": "Get2it",
+  "name": "get2it",
   "version": "1.0.0",
   "description": "Get2it Labs Project",
   "engines": {
@@ -10,7 +10,8 @@
   "scripts": {
     "server": "nodemon index.js",
     "start": "node index.js",
-    "test": "cross-env DB_ENV=testing jest --watch --verbose --testTimeout=10000"
+    "test": "jest --detectOpenHandles --forceExit",
+    "coverage": "jest --coverage --detectOpenHandles --forceExit || true"
   },
   "keywords": [],
   "author": "Lambda School",
@@ -31,6 +32,13 @@
     "testEnvironment": "node",
     "coveragePathIgnorePatterns": [
       "/node_modules/"
+    ],
+    "collectCoverageFrom": [
+      "**/*.js",
+      "!**/node_modules/**",
+      "!**/vendor/**",
+      "!**/database/**",
+      "!**/tests/**"
     ]
   },
   "devDependencies": {
