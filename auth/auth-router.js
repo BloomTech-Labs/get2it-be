@@ -26,6 +26,7 @@ const validationLogin = [
   check('password').isLength({ min: 6 })
 ]
 
+
 // for endpoints beginning with /api/auth
 router.post('/register', validationRules, (req, res) => {
   let newUser = req.body;
