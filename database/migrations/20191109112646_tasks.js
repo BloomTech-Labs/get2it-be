@@ -3,8 +3,7 @@ exports.up = function(knex) {
     return knex.schema.createTable('tasks', tasks => {
         tasks.increments();
 
-        tasks.integer('user_id').unsigned().notNullable().references('id').inTable('users');
-        tasks.integer('categories_id').unsigned().references('id').inTable('categories');
+        tasks.integer('user_id').unsigned().notNullable().references('id').inTable('users').onUpdate('CASCADE').onDelete('RESTRICT');
         tasks.string('name').notNullable();
         tasks.boolean('status');
         tasks.date('date');
