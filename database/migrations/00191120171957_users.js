@@ -2,6 +2,7 @@
 exports.up = function(knex) {
     return knex.schema.createTable('users', users => {
         users.increments();
+        
 
         users.string('displayName', 128).notNullable().comment('This is the username field');
         users.string('password', 128).notNullable().comment('This is the password field');
