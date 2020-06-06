@@ -71,6 +71,37 @@ router.delete('/categories/:id', restricted, (req, res) => {
     });
 });
 
+router.post('/:id/tasks', restricted, (req, res) => {
+  const {id} = req.params;
+  const info = req.body;
+  const taskID = info.task_id;
+  const taskCat = {task_id: taskID, category_id: id}
+
+  Categories.assignCategory(taskCat)
+    .then(category => {
+      res.status(201).json('Category assigned successfully');
+    })
+    .catch(err => {
+      res.status(500).json({ message: "failed to assign category"});
+    })
+});
+
+router.get('/:id/tasks', restricted, (req, res) => {
+  const {id} = req.params;
+
+  Categories.findTasks(id)
+    .then(tasks => {
+      if(tasks.length) {
+        res.status(200).json(tasks);
+      } else {
+        res.status(404).json({message: 'Could not find tasks for given category'})
+      }
+    })
+    .catch(err => {
+      res.status(500).json({message: 'Failed to get tasks'});
+    });
+});
+
 // Validate Middleware
 
 async function validateUser(req, res, next) {
