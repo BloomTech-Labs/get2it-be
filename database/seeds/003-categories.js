@@ -3,9 +3,16 @@ exports.seed = function(knex) {
     .then(function () {
       return knex('categories').insert([
         {
-          name: 'Brush Teeth',
-          user_id: 1,
-          task_id: 1
+          name: 'Personal',
+          user_id: 1
+        },
+        {
+          name: 'Personal',
+          user_id: 2
+        },
+        {
+          name: 'Personal',
+          user_id: 3
         }
       ]);
     });
