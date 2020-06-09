@@ -12,7 +12,7 @@ router.post('/:id/categories', restricted, (req, res) => {
   const issue = {...req.body, user_id: id}
 
   Categories.add(issue)
-    .then(category => {
+    .then(res => {
       res.status(201).json('Category created successfully');
     })
     .catch(err => {
