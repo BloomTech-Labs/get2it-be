@@ -2,8 +2,8 @@ const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { check, validationResult } = require('express-validator')
-
 const Users = require('../users/users-model.js');
+const Categories = require('../categories/categories-model');
 
 router.get('/users', (req, res) => {
   Users.find()
@@ -32,16 +32,28 @@ router.post('/register', validationRules, (req, res) => {
   let newUser = req.body;
   const hash = bcrypt.hashSync(newUser.password, 10); // 2 ^ n
   newUser.password = hash;
-  console.log("here")
 
   Users.add(newUser)
     .then(saved => {
-      const token = generateToken(saved)
+      const token = generateToken(saved);
+      const id = saved.id
       res.status(201).json({
         user: saved,
         token
-      });
-      console.log("Created User Succesfully")
+      });  
+      console.log("Created User Succesfully");
+      return(id) 
+    })
+    .then(id => {
+      console.log(id)  
+
+      Categories.add({name: 'Personal', user_id: id})
+        .then(res => {
+          console.log(res)
+        })  
+        .catch(err => {
+          console.log(err)
+        });
     })
     .catch(({ message }) => {
       console.log("Catch error from Line 46 of register in auth-router.js:", message)
