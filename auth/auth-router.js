@@ -73,7 +73,7 @@ router.post('/login', validationLogin, (req, res) => {
         const token = generateToken(user)
         console.log(user)
         res.status(200).json({
-          message: `Welcome ${user.username}!`,
+          message: `Welcome ${user.displayName}!`,
           user: user,
           token
         });
