@@ -37,7 +37,7 @@ router.get('/:id/categories', restricted, (req, res) => {
     });
 });
 
-router.get('categories/:id', restricted, (req, res) => {
+router.get('/categories/:id', restricted, (req, res) => {
   const {id} = req.params;
 
   Categories.findById(id)
