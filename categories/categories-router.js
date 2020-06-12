@@ -2,6 +2,7 @@ const router = require('express').Router();
 
 const Users = require('../users/users-model.js'); //will be needed for updating password
 const Categories = require('../categories/categories-model.js');
+const CatTask = require('../categories/cat-task-model.js');
 
 const restricted = require('../auth/restricted-middleware.js');
 
@@ -77,7 +78,7 @@ router.post('/:id/tasks', restricted, (req, res) => {
   const taskID = info.task_id;
   const taskCat = {task_id: taskID, category_id: id}
 
-  Categories.assignCategory(taskCat)
+  CatTask.assignCategory(taskCat)
     .then(category => {
       res.status(201).json('Category assigned successfully');
     })
@@ -89,7 +90,7 @@ router.post('/:id/tasks', restricted, (req, res) => {
 router.get('/:id/tasks', restricted, (req, res) => {
   const {id} = req.params;
 
-  Categories.findTasks(id)
+  CatTask.findTasks(id)
     .then(tasks => {
       if(tasks.length) {
         res.status(200).json(tasks);
