@@ -3,19 +3,27 @@ const db = require('../database/dbConfig.js');
 module.exports = {
     findById,
     assignCategory,
+    update,
     findTasks
 };
 
+// (id) below is the task id
 function findById(id) {
-    return db('task-categories as tc')
+    return db('task-categories')
         .where({task_id: id})
         .first()
 };
 
 function assignCategory(combo) {
     return db('task-categories')
-      .insert(combo)
+        .insert(combo)
 };
+
+function update(combo, id) {
+    return db('task-categories')
+        .where({task_id: id})
+        .update(combo)
+}
   
   // (id) below is the category id
   function findTasks(id) {
