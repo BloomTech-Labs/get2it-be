@@ -120,12 +120,12 @@ router.post('/:id/tasks', restricted, (req, res) => {
 });
 
 router.put('/tasks/:id', restricted, (req, res) => {
-  const {id} = require.params;
+  const {id} = req.params;
   const info = req.body;
   const categoryID = info.category_id;
   const taskCat = {task_id: id, category_id: categoryID}
 
-  CatTask.update(taskCat, taskID)
+  CatTask.update(taskCat, id)
     .then(task => {
       res.status(201).json('Task category updated successfully.');
     })
