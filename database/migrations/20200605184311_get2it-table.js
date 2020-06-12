@@ -24,6 +24,7 @@ exports.up = function(knex) {
                 tasks.string('end_time');
                 tasks.string('task_icon');
                 tasks.integer('timeLeft');
+                tasks.integer('notificationId');
                 tasks.boolean('initialNotify').defaultTo(false);
                 tasks.boolean('notifyOn').defaultTo(false);
             })

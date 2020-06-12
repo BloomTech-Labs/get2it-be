@@ -10,7 +10,7 @@ exports.seed = function(knex) {
           start_time: '7:19 pm',
           end_time: '7:19 pm',
           task_icon: '',
-          timeLeft: null,
+          timeLeft: null, notificationId: 1,
           initialNotify: null,
           notifyOn: false
         },
@@ -22,7 +22,7 @@ exports.seed = function(knex) {
           start_time: '7:19 pm',
           end_time: '7:19 pm',
           task_icon: '',
-          timeLeft: null,
+          timeLeft: null, notificationId: 1,
           initialNotify: null,
           notifyOn: false
         },
@@ -34,7 +34,7 @@ exports.seed = function(knex) {
           start_time: '7:19 pm',
           end_time: '7:19 pm',
           task_icon: '',
-          timeLeft: null,
+          timeLeft: null, notificationId: 1,
           initialNotify: null,
           notifyOn: false
         },
@@ -46,7 +46,7 @@ exports.seed = function(knex) {
           start_time: '7:19 pm',
           end_time: '7:19 pm',
           task_icon: '',
-          timeLeft: null,
+          timeLeft: null, notificationId: 1,
           initialNotify: null,
           notifyOn: false
         },
@@ -58,7 +58,7 @@ exports.seed = function(knex) {
           start_time: '7:19 pm',
           end_time: '7:19 pm',
           task_icon: '',
-          timeLeft: null,
+          timeLeft: null, notificationId: 1,
           initialNotify: null,
           notifyOn: false
         },
@@ -70,7 +70,7 @@ exports.seed = function(knex) {
           start_time: '7:19 pm',
           end_time: '7:19 pm',
           task_icon: '',
-          timeLeft: null,
+          timeLeft: null, notificationId: 1,
           initialNotify: null,
           notifyOn: false
         }
