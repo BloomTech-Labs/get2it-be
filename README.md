@@ -17,24 +17,17 @@ Installing
 4. install knex globally: `npm i -g knex`
 5. construct a copy of the data base in console: `knex migrate:latest`
 6. populate database with dummy/seeded data: `knex seed:run`
-7. create a .env file and include JWT_SECRET='' 
+7. create a .env file and include JWT_SECRET=''
 8. run the server: `npm run server`. Server port default is 3300.
 
 ### Backend framework goes here
 
-🚫 Why did you choose this framework?
-
--    Point One
--    Point Two
--    Point Three
--    Point Four
+Node.js
 
 ## 2️⃣ Endpoints
 
 #### Register New User
 #### **POST** to *https://get2itpt9.herokuapp.com/api/auth/register*
-
-Takes an object including: { username: "username", email: "email@email.com", password: "pass" }
 
 Request: `req.body`
 
@@ -62,91 +55,158 @@ Returns newly created user object as well as JSON Web Token (JWT)
 #### Login Existing User
 POST to https://get2itpt9.herokuapp.com/api/auth/login
 
-Takes an object including: { email: "email@email.com", password: "pass" }
-
-Returns JWT
+```
+{
+  email: email@email.com,        // String Requried
+  password: Test123!      // String Requried
+}
+```
+Response: `res.body`
+```
+{
+    "message": "Welcome TEST1",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0Ijo2LCJ1c2VybmFtZSI6IlRFU1QxIiwiaWF0IjoxNTgzMDg1MjQ4LCJleHAiOjE1ODMwODg4NDh9.dSaZfJ9cGPAJYmgoIoZ-hrQPEXQeiMEs4ckOJDEgliw"
+}
+```
 
 #### Edit user info
 PUT to https://get2it.herokuapp.com/api/auth/edit-profile/:id
 
-Where :id is user id
 
-Returns 1 for success
 
 #### Create a new task
 POST to https://get2it.herokuapp.com/api/users/:id/tasks
 
-Where :id is user id
+User creates a new task.
 
-Takes an object including:
+Request: `req.body`
+
+```
 {
-  name: "required",
-  date: "date-format",
-  start_time: "optional",
-  end_time: "optional",
-  task_icon: "optional"
+  name: 'Task 1',
+  date: '2020-06-08T00:00:00.000Z',
+  start_time: '7:19 pm',
+  end_time: '7:19 pm',
+  task_icon: '',
 }
+```
+Response: `res.body`
 
-returns "task created successfully"
+```
+{
+          user_id: 1,
+          name: 'Task 1',
+          status: null,
+          date: '2020-06-08T00:00:00.000Z',
+          start_time: '7:19 pm',
+          end_time: '7:19 pm',
+          task_icon: '',
+          timeLeft: null,
+          initialNotify: null,
+          notifyOn: false
+
+}
+```
 
 #### Get tasks by user
 GET to https://get2it.herokuapp.com/api/users/:id/tasks
 
-Where :id is user id
+Returns all tasks for a single user, via the **user's** `:id` URL param.
 
-Returns an array of objects
+Request: `req.body`
+
+```
+// N/A
+```
+Response: `res.body`
+```
+[
+        {
+          user_id: 1,
+          name: 'Task 1',
+          status: null,
+          date: '2020-06-08T00:00:00.000Z',
+          start_time: '7:19 pm',
+          end_time: '7:19 pm',
+          task_icon: '',
+          timeLeft: null,
+          initialNotify: null,
+          notifyOn: false
+        },
+        {
+          user_id: 1,
+          name: 'Task 2',
+          status: null,
+          date: '2020-06-09T00:00:00.000Z',
+          start_time: '7:19 pm',
+          end_time: '7:19 pm',
+          task_icon: '',
+          timeLeft: null,
+          initialNotify: null,
+          notifyOn: false
+        }
+]
+```
 
 #### Update a task
 PUT to https://get2it.herokuapp.com/api/users/tasks/:id
 
-Where :id is task id
+Updates an existing task via the **task's** `:id` URL param.
 
-Returns 1 for successful update
+Request: `req.body`
+
+```
+{
+  name: 'Task 1',
+  date: '2020-06-08T00:00:00.000Z',
+  start_time: '7:19 pm',
+  end_time: '7:19 pm',
+  task_icon: '',
+}
+```
+Response: `res.body`
+
+Returns JSON object with edited values.
+
+```
+{
+  user_id: 1,
+  name: 'Task 2',
+  status: null,
+  date: '2020-06-09T00:00:00.000Z',
+  start_time: '7:19 pm',
+  end_time: '7:19 pm',
+  task_icon: '',
+  timeLeft: null,
+  initialNotify: null,
+  notifyOn: false
+}
+```
 
 #### Delete a task
 DELETE to https://get2it.herokuapp.com/api/users/tasks/:id
 
-Where :id is task id
+Deletes a task for a single user, via the **tasks's** `:id` URL param.
 
-Returns "removed: 1" for successful delete
+Request: `req.body`
+
+```
+// N/A
+```
+Response: `res.body`
+```
+{removed: deletedItem}
+```
+
 
 # Data Model
 
-🚫This is just an example. Replace this with your data model
 
 #### 2️⃣ ORGANIZATIONS
 
----
-
-```
-{
-  id: UUID
-  name: STRING
-  industry: STRING
-  paid: BOOLEAN
-  customer_id: STRING
-  subscription_id: STRING
-}
-```
 
 #### USERS
 
----
-
-```
-{
-  id: UUID
-  organization_id: UUID foreign key in ORGANIZATIONS table
-  first_name: STRING
-  last_name: STRING
-  role: STRING [ 'owner', 'supervisor', 'employee' ]
-  email: STRING
-  phone: STRING
-  cal_visit: BOOLEAN
-  emp_visit: BOOLEAN
-  emailpref: BOOLEAN
-  phonepref: BOOLEAN
-}
 ```
 
 ## 2️⃣ Actions
