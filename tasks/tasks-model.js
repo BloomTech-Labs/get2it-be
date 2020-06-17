@@ -39,5 +39,5 @@ function update(task, id) {
 function remove(id) {
     return db('tasks')
         .where({ id })
-        .del()
+        .delete()
 }
