@@ -54,13 +54,13 @@ describe('Tasks routes', () => {
                 .set('Authorization', token)
                 .expect(200, done)
         })
-        it('Should return Task 2', () => {
+        it('Should return Task 2', (done) => {
             request(server)
                 .get('/api/users/1/tasks')
                 .set('Authorization', token)
                 .expect((res) => {
                     res.body.name = 'Task 2'
-                })
+                }, done())
         })
     })
 })
