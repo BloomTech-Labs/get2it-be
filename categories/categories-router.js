@@ -2,6 +2,7 @@ const router = require('express').Router();
 
 const Users = require('../users/users-model.js'); //will be needed for updating password
 const Categories = require('../categories/categories-model.js');
+const CatTask = require('../categories/cat-task-model.js');
 
 const restricted = require('../auth/restricted-middleware.js');
 
@@ -26,7 +27,7 @@ router.get('/:id/categories', restricted, (req, res) => {
   Categories.findCategories(id)
     .then(categories => {
       if(categories.length) {
-        res.json(categories);
+        res.status(200).json(categories);
       } else {
         res.status(404).json({message: 'Could not find categories for given user'})
       }
@@ -34,6 +35,22 @@ router.get('/:id/categories', restricted, (req, res) => {
     .catch(err => {
       res.status(500).json({message: 'Failed to get categories'});
     });
+});
+
+router.get('/categories/:id', restricted, (req, res) => {
+  const {id} = req.params;
+
+  Categories.findById(id)
+    .then(category => {
+      if(category) {
+        res.status(200).json(category);
+      } else {
+        res.status(404).json({message: 'Could not find category for given task.'})
+      }
+    })
+    .catch(err => {
+      res.status(500).json({message: 'Failed to get category'})
+    })
 });
 
 router.put('/categories/:id', restricted, (req, res) => {
@@ -71,13 +88,29 @@ router.delete('/categories/:id', restricted, (req, res) => {
     });
 });
 
+router.get('/tasks/:id', restricted, (req, res) => {
+  const {id} = req.params;
+
+  CatTask.findById(id)
+    .then(task => {
+      if(task) {
+        res.status(200).json(task);
+      } else {
+        res.status(404).json({message: 'Could not find category for given task.'})
+      }
+    })
+    .catch(err => {
+      res.status(500).json({message: 'Failed to get category'})
+    })
+})
+
 router.post('/:id/tasks', restricted, (req, res) => {
   const {id} = req.params;
   const info = req.body;
   const taskID = info.task_id;
   const taskCat = {task_id: taskID, category_id: id}
 
-  Categories.assignCategory(taskCat)
+  CatTask.assignCategory(taskCat)
     .then(category => {
       res.status(201).json('Category assigned successfully');
     })
@@ -86,10 +119,25 @@ router.post('/:id/tasks', restricted, (req, res) => {
     })
 });
 
+router.put('/tasks/:id', restricted, (req, res) => {
+  const {id} = req.params;
+  const info = req.body;
+  const categoryID = info.category_id;
+  const taskCat = {task_id: id, category_id: categoryID}
+
+  CatTask.update(taskCat, id)
+    .then(task => {
+      res.status(201).json('Task category updated successfully.');
+    })
+    .catch(err => {
+      res.status(500).json({message: 'Failed to update tasks category'});
+    })
+});
+
 router.get('/:id/tasks', restricted, (req, res) => {
   const {id} = req.params;
 
-  Categories.findTasks(id)
+  CatTask.findTasks(id)
     .then(tasks => {
       if(tasks.length) {
         res.status(200).json(tasks);
