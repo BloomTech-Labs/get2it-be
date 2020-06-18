@@ -14,7 +14,10 @@ router.post('/:id/categories', restricted, (req, res) => {
 
   Categories.add(issue)
     .then(cat => {
-      res.status(201).json('Category created successfully');
+      res.status(201).json({
+        message: 'Category created successfully',
+        id: cat.id
+      });
     })
     .catch(cat => {
       res.status(500).json({ message: "failed to create new category"});
