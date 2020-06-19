@@ -30,7 +30,7 @@ function update(combo, id) {
     return db('task-categories as tc')
       .join('tasks as t', 't.id', 'tc.task_id')
       .join('categories', 'categories.id', 'tc.category_id')
-      .select('t.name', 't.status', 't.date', 't.start_time', 't.end_time', 't.task_icon', 't.timeLeft', 't.initialNotify', 't.notifyOn')
+      .select('t.name', 't.status', 't.date', 't.start_time', 't.end_time', 't.task_icon', 't.timeLeft', 't.initialNotify', 't.notifyOn', 't.id')
       .where({category_id: id})
 };
   
