@@ -87,17 +87,20 @@ router.put('/tasks/:id', restricted, (req, res) => {
 router.delete('/tasks/:id', restricted, (req, res) => {
   const { id } = req.params;
 
-  Tasks.remove(id)
-    .then(deleted => {
-      if (deleted) {
-        res.json({ removed: deleted });
+  Tasks.findById(id)
+    .then(task => {
+      if (task) {
+        Tasks.remove(id)
+          .then(deleted => { 
+            res.json({ removed: deleted });
+        })
       } else {
-        res.status(404).json({ message: 'Could not find task with given id' });
+        res.status(404).json({message: 'Could not find task with given id'})
       }
     })
     .catch(err => {
-      res.status(500).json({ message: 'Failed to delete task' });
-    });
+      res.statusMessage(500).json({message: 'Failed to delete task'})
+    })
 });
 
 //Validate Middleware
